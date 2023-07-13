@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
 import json
-import logging
-import re
 import requests
 from multiprocessing.pool import ThreadPool
-import os
 import time
 
 import openai
@@ -14,10 +11,9 @@ import srt
 import numpy as np
 import pandas as pd
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from langchain.embeddings import OpenAIEmbeddings
-from langchain.llms import OpenAI
 from langchain.schema import Document
 from requests.exceptions import HTTPError
 from sklearn.cluster import KMeans

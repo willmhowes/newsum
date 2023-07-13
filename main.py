@@ -1,29 +1,19 @@
 #!/usr/bin/env python3
 
 import json
-import logging
 import re
-import requests
 from multiprocessing.pool import ThreadPool
 import os
 
 import openai
-import srt
 
-import altair as alt
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
 
 from datetime import datetime, timedelta
 
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.llms import OpenAI
-from langchain.schema import Document
 from requests.exceptions import HTTPError
-from sklearn.cluster import KMeans
 
 from functions import load_inventory, load_srt, select_docs, get_summary
 from functions import THREAD_COUNT, OUTPUT_FOLDER_NAME
