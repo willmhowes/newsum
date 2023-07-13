@@ -77,6 +77,7 @@ def draw_summaries(json_output):
 @st.cache_resource(show_spinner="Summarizing...")
 def gather_summaries(dt, ch, lg, lm, ck, ct, _seldocs):
   summary_args = [(d,lm) for d in _seldocs]
+  print("begin summarizing each document...")
   with ThreadPool(THREAD_COUNT) as pool:
     summaries = pool.starmap(get_summary, summary_args)
   return summaries
@@ -125,7 +126,7 @@ with st.expander("Program Inventory"):
   inventory
 
 if f"{dt}-{ch}-{lm}-{lg}.json" in os.listdir(f"./{OUTPUT_FOLDER_NAME}"):
-    print("FOUND FILE")
+    print(f"FOUND FILE - {dt}-{ch}-{lm}-{lg}.json")
     summaries = open(f"./{OUTPUT_FOLDER_NAME}/{dt}-{ch}-{lm}-{lg}.json", "r")
     summaries_json = json.loads(summaries.read())
     draw_summaries(summaries_json)
