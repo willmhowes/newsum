@@ -7,7 +7,7 @@ import openai
 from datetime import datetime, timedelta
 from requests.exceptions import HTTPError
 
-from functions import load_inventory, select_docs, get_summary
+from functions import load_inventory, select_docs, get_summary, remove_invalid_summaries
 from functions import THREAD_COUNT, OUTPUT_FOLDER_NAME
 
 
@@ -56,6 +56,7 @@ for ch in CHANNELS:
   summary_args = [(d,LM) for d in seldocs]
   with ThreadPool(THREAD_COUNT) as pool:
     summaries = pool.starmap(get_summary, summary_args)
+  summaries = remove_invalid_summaries(summaries)
 
   print("writing results...")
   with open(f"{OUTPUT_FOLDER_NAME}/{DT}-{ch}-{LM}-{LG}.json", 'w+') as f:

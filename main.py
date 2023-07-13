@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 
 from requests.exceptions import HTTPError
 
-from functions import load_inventory, load_srt, select_docs, get_summary
+from functions import load_inventory, load_srt, select_docs, get_summary, remove_invalid_summaries
 from functions import THREAD_COUNT, OUTPUT_FOLDER_NAME
 
 TITLE = "News Summary"
@@ -80,7 +80,7 @@ def gather_summaries(dt, ch, lg, lm, ck, ct, _seldocs):
   print("begin summarizing each document...")
   with ThreadPool(THREAD_COUNT) as pool:
     summaries = pool.starmap(get_summary, summary_args)
-  return summaries
+  return remove_invalid_summaries(summaries)
 
 qp = st.experimental_get_query_params()
 if "date" not in st.session_state and qp.get("date"):

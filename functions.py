@@ -119,12 +119,24 @@ def get_summary(d, llm):
         model=LLM_MODELS[llm],
         messages=[{"role": "user", "content": msg}]
       )
-      result = json.loads(res.choices[0].message.content.strip())
-      result = result | d.metadata
-      result["transcript"] = d.page_content.strip()
+      try:
+        result = json.loads(res.choices[0].message.content.strip())
+        result = result | d.metadata
+        result["transcript"] = d.page_content.strip()
+        result["valid"] = True
+      except KeyError as e:
+        result = {
+          "valid": False
+        }
       break
     except openai.error.OpenAIError as e:
       print(f"Error: {e}. Retrying in {round(delay_secs, 2)} seconds.")
       time.sleep(delay_secs)
       continue
   return result
+
+def remove_invalid_summaries(summaries):
+  for s in summaries:
+    if s.pop("valid") == False:
+      summaries.remove(s)
+  return summaries
